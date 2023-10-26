@@ -6,5 +6,5 @@ final Map<String, Widget Function(BuildContext context)> appRoutes = {
   "loading": (_) => const LoadingPage(),
   "login": (_) => const LoginPage(),
   "register": (_) => const RegisterPage(),
-  "usuarios": (_) => const UsuariosPage(),
+  "users": (_) => const UsuariosPage(),
 };
