@@ -1,5 +1,3 @@
-import 'package:chat_privado/widgets/btn_azul.dart';
-import 'package:chat_privado/widgets/custom_input.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/widgets.dart';
@@ -14,7 +12,7 @@ class LoginPage extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Container(
+          child: SizedBox(
             height: MediaQuery.of(context).size.height * 0.9,
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

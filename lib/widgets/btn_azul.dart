@@ -17,14 +17,14 @@ class BtnBlueButton extends StatelessWidget {
         ),
       ),
       onPressed: onPressed,
-      child: Container(
+      child: SizedBox(
         height: 55,
         width: double.infinity,
         child: Center(
           child: Text(
             description,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               color: Colors.white,
             ),
