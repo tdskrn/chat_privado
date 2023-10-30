@@ -1,6 +1,10 @@
 import 'package:chat_privado/models/usuario.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import '../services/auth_services.dart';
 
 class UsuariosPage extends StatefulWidget {
   const UsuariosPage({super.key});
@@ -13,26 +17,34 @@ class _UsuariosPageState extends State<UsuariosPage> {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   final usuarios = [
-    Usuario(online: true, name: 'Maria', email: 'maria@teste.com', uid: '1'),
-    Usuario(online: false, name: 'Flavia', email: 'flavia@teste.com', uid: '2'),
+    Usuario(online: true, nombre: 'Maria', email: 'maria@teste.com', uid: '1'),
     Usuario(
-        online: true, name: 'Vinicius', email: 'vinicius@teste.com', uid: '3'),
+        online: false, nombre: 'Flavia', email: 'flavia@teste.com', uid: '2'),
+    Usuario(
+        online: true,
+        nombre: 'Vinicius',
+        email: 'vinicius@teste.com',
+        uid: '3'),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'Meu Nome',
-          style: TextStyle(
+        title: Text(
+          authService.usuario.nombre,
+          style: const TextStyle(
             color: Colors.black54,
           ),
         ),
         backgroundColor: Colors.white,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, 'login');
+            AuthService.deleteToken();
+          },
           icon: const Icon(
             Icons.exit_to_app,
             color: Colors.black54,
@@ -83,15 +95,15 @@ class _UsuariosPageState extends State<UsuariosPage> {
       leading: GestureDetector(
         onTap: () {
           setState(() {
-            user.isOnline = !user.online;
+            user.online = !user.online;
           });
         },
         child: CircleAvatar(
           backgroundColor: Colors.blue[100],
-          child: Text(user.name.substring(0, 2)),
+          child: Text(user.nombre.substring(0, 2)),
         ),
       ),
-      title: Text(user.name),
+      title: Text(user.nombre),
       subtitle: Text(user.email),
       trailing: Container(
         width: 10,

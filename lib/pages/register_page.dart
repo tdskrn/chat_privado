@@ -1,4 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:chat_privado/helpers/mostrar_alerta.dart';
+import 'package:chat_privado/services/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/widgets.dart';
 
@@ -48,15 +53,24 @@ class _Form extends StatefulWidget {
 }
 
 class __FormState extends State<_Form> {
+  final TextEditingController nombreController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthService>(context);
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: <Widget>[
+          CustomInput(
+              icon: Icons.person,
+              placeholder: 'Nome',
+              textEditingController: nombreController),
+          const SizedBox(
+            height: 20,
+          ),
           CustomInput(
             icon: Icons.mail,
             isPassword: false,
@@ -79,7 +93,19 @@ class __FormState extends State<_Form> {
           ),
           BtnBlueButton(
             description: "Registre-se",
-            onPressed: () {},
+            onPressed: () async {
+              final registerOk = await authProvider.register(
+                  nombreController.text.trim(),
+                  emailController.text.trim(),
+                  passwordController.text.trim());
+              if (registerOk == true) {
+                // TODO conectar socket service
+
+                Navigator.pushReplacementNamed(context, 'users');
+              } else {
+                mostrarAlerta(context, 'Registro incorreto', registerOk);
+              }
+            },
           )
         ],
       ),

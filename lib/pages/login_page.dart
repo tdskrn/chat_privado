@@ -1,4 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:chat_privado/helpers/mostrar_alerta.dart';
+import 'package:chat_privado/services/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/widgets.dart';
 
@@ -52,6 +57,7 @@ class __FormState extends State<_Form> {
   final TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -79,7 +85,22 @@ class __FormState extends State<_Form> {
           ),
           BtnBlueButton(
             description: "LOGIN",
-            onPressed: () {},
+            onPressed: authService.autenticando
+                ? () => {}
+                : () async {
+                    FocusScope.of(context).unfocus();
+                    final loginOk = await authService.login(
+                        emailController.text.trim(),
+                        passwordController.text.trim());
+                    if (loginOk) {
+                      // Navigar a outra tela
+                      Navigator.pushReplacementNamed(context, 'users');
+                    } else {
+                      // Mostrar alerta
+                      mostrarAlerta(context, 'Login incorreto',
+                          'Revise suas credenciais');
+                    }
+                  },
           )
         ],
       ),

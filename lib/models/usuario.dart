@@ -1,48 +1,41 @@
+// To parse this JSON data, do
+//
+//     final usuario = usuarioFromJson(jsonString);
+
+import 'dart:convert';
+
+Usuario usuarioFromJson(String str) => Usuario.fromJson(json.decode(str));
+
+String usuarioToJson(Usuario data) => json.encode(data.toJson());
+
 class Usuario {
-  bool online;
-  final String name;
+  final String nombre;
   final String email;
-  String uid;
+  bool online;
+  final String uid;
+
   Usuario({
-    required this.online,
-    required this.name,
+    required this.nombre,
     required this.email,
+    required this.online,
     required this.uid,
   });
 
-  Usuario copyWith({
-    bool? online,
-    String? name,
-    String? email,
-    String? uid,
-  }) {
-    return Usuario(
-      online: online ?? this.online,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      uid: uid ?? this.uid,
-    );
+  set isOnline(bool online) {
+    this.online = online;
   }
 
-  set isOnline(bool isOnline) {
-    online = isOnline;
-  }
+  factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
+        nombre: json["nombre"],
+        email: json["email"],
+        online: json["online"],
+        uid: json["uid"],
+      );
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'online': online,
-      'name': name,
-      'email': email,
-      'uid': uid,
-    };
-  }
-
-  factory Usuario.fromMap(Map<String, dynamic> map) {
-    return Usuario(
-      online: map['online'] as bool,
-      name: map['name'] as String,
-      email: map['email'] as String,
-      uid: map['uid'] as String,
-    );
-  }
+  Map<String, dynamic> toJson() => {
+        "nombre": nombre,
+        "email": email,
+        "online": online,
+        "uid": uid,
+      };
 }
